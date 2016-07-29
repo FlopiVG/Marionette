@@ -24,3 +24,11 @@ ContactManager.on('start', function(){
         ContactManager.trigger("contacts:list");
     }
 });
+
+ContactManager.on("initialize:before", function(){
+    _.templateSettings = {
+        interpolate: /\{\{=(.+?)\}\}/g,
+        escape: /\{\{-(.+?)\}\}/g,
+        evaluate: /\{\{(.+?)\}\}/g
+    };
+});
