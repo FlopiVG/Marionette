@@ -1,34 +1,32 @@
-var ContactManager = new Marionette.Application();
+define(["marionette", "apps/config/marionette/regions/dialog"], function(Marionette) {
 
-ContactManager.addRegions({
-    headerRegion: "#header-region",
-    mainRegion: "#main-region",
-    dialogRegion: Marionette.Region.Dialog.extend({
-        el: "#dialog-region"
-    })
-});
+    var ContactManager = new Marionette.Application();
 
-ContactManager.navigate = function(route, options){
-    options  || (options = {});
-    Backbone.history.navigate(route, options);
-};
+    ContactManager.addRegions({
+        headerRegion: "#header-region",
+        mainRegion: "#main-region",
+        dialogRegion: Marionette.Region.Dialog.extend({
+            el: "#dialog-region"
+        })
+    });
 
-ContactManager.getCurrentRoute = function(){
-    return Backbone.history.fragment;
-};
-
-ContactManager.on('start', function(){
-    if(Backbone.history) Backbone.history.start();
-
-    if(this.getCurrentRoute() === ""){
-        ContactManager.trigger("contacts:list");
-    }
-});
-
-ContactManager.on("initialize:before", function(){
-    _.templateSettings = {
-        interpolate: /\{\{=(.+?)\}\}/g,
-        escape: /\{\{-(.+?)\}\}/g,
-        evaluate: /\{\{(.+?)\}\}/g
+    ContactManager.navigate = function (route, options) {
+        options || (options = {});
+        Backbone.history.navigate(route, options);
     };
+
+    ContactManager.getCurrentRoute = function () {
+        return Backbone.history.fragment;
+    };
+
+    ContactManager.on('start', function () {
+        console.log("Contact Manager has started");
+        if (Backbone.history) Backbone.history.start();
+
+        if (this.getCurrentRoute() === "") {
+            ContactManager.trigger("contacts:list");
+        }
+    });
+
+    return ContactManager;
 });
