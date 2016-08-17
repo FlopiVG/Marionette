@@ -1,31 +1,37 @@
-ContactManager.module("Entities", function(Entities, ContactManager, Backbone, Marionette, $, _){
+define(["app", "localstorage"], function(ContactManager){
 
-    var findStorageKey = function(entity){
-        //use a model's urlRoot value
-        if(entity.urlRoot){
-            return _.result(entity, "urlRoot");
-        }
+    ContactManager.module("Entities", function(Entities, ContactManager, Backbone, Marionette, $, _){
 
-        //use  a collection's url value
-        if(entity.url){
-            return _.result(entity, "url");
-        }
-        //fallback to obtaining a model's storage key form
-        //the collection is belongs to
-        if(entity.collection && entity.collection.url){
-            return _.result(entity.collection, "url");
-        }
+        var findStorageKey = function(entity){
+            //use a model's urlRoot value
+            if(entity.urlRoot){
+                return _.result(entity, "urlRoot");
+            }
 
-        throw new Error("Unable to determinate storage key");
-    };
+            //use  a collection's url value
+            if(entity.url){
+                return _.result(entity, "url");
+            }
+            //fallback to obtaining a model's storage key form
+            //the collection is belongs to
+            if(entity.collection && entity.collection.url){
+                return _.result(entity.collection, "url");
+            }
 
-    var StorageMixin = function(entityPrototype){
-        var storageKey = findStorageKey(entityPrototype);
-        return {localStorage : new Backbone.LocalStorage(storageKey)};
-    };
+            throw new Error("Unable to determinate storage key");
+        };
 
-    Entities.configureStorage = function(entity){
-        _.extend(entity.prototype, new StorageMixin(entity.prototype));
-    };
+        var StorageMixin = function(entityPrototype){
+            var storageKey = findStorageKey(entityPrototype);
+            return {localStorage : new Backbone.LocalStorage(storageKey)};
+        };
+
+        Entities.configureStorage = function(entity){
+            _.extend(entity.prototype, new StorageMixin(entity.prototype));
+        };
+
+    });
+
+    return ContactManager.Entities.configureStorage;
 
 });

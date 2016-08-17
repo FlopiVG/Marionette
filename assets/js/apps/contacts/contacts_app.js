@@ -1,57 +1,34 @@
-ContactManager.module("ContactsApp", function(ContactsApp, ContactManager, Backbone, Marionette, $, _){
+define(["app"], function(ContactManager){
 
-    ContactsApp.Router = Marionette.AppRouter.extend({
-        appRoutes : {
-            "contacts(/filter/criterion::criterion)": "listContacts",
-            "contacts/:id": "showContact",
-            "contacts/:id/edit": "editContact"
-        }
-    });
+    ContactManager.module("ContactsApp", function(ContactsApp, ContactManager, Backbone, Marionette, $, _){
 
-    var API = {
-        listContacts: function(criterion){
-            ContactsApp.List.Controller.listContacts(criterion);
-            ContactManager.execute("set:active:header", "contacts");
-        },
-        showContact: function(id){
-            ContactsApp.Show.Controller.showContact(id);
-            ContactManager.execute("set:active:header", "contacts");
-        },
-        editContact: function(id){
-            ContactsApp.Edit.Controller.editContact(id);
-            ContactManager.execute("set:active:header", "contacts");
-        }
-    };
-
-    ContactManager.on("contacts:filter", function(criterion){
-        if(criterion){
-            ContactManager.navigate("contacts/filter/criterion:" + criterion);
-        }
-        else{
-            ContactManager.navigate("contacts");
-            API.listContacts(criterion);
-        }
-    });
-
-    ContactManager.on("contact:edit", function(id){
-        ContactManager.navigate("contacts/" + id + "/edit");
-        API.editContact(id);
-    });
-
-    ContactManager.on("contacts:list", function(){
-        ContactManager.navigate("contacts");
-        API.listContacts();
-    });
-
-    ContactManager.on("contact:show", function(id){
-        ContactManager.navigate("contacts/" + id);
-        API.showContact(id);
-    });
-
-    ContactManager.addInitializer(function(){
-        new ContactsApp.Router({
-            controller: API
+        ContactsApp.Router = Marionette.AppRouter.extend({
+            appRoutes: {
+                "contacts": "listContacts"
+            }
         });
+
+        var API = {
+            listContacts: function(criterion){
+                require(["apps/contacts/list/list_controller"], function(ListController){
+                    ListController.listContacts(criterion);
+                });
+            }
+        };
+
+        ContactManager.on("contacts:list", function(){
+            ContactManager.navigate("contacts");
+            API.listContacts();
+        });
+
+        ContactManager.addInitializer(function(){
+            new ContactsApp.Router({
+                controller: API
+            });
+        });
+
+        return ContactManager.ContactsApp;
+
     });
 
 });

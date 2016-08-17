@@ -20,11 +20,15 @@ define(["marionette", "apps/config/marionette/regions/dialog"], function(Marione
     };
 
     ContactManager.on('start', function () {
-        console.log("Contact Manager has started");
-        if (Backbone.history) Backbone.history.start();
+        if (Backbone.history) {
+            require(["apps/contacts/contacts_app"], function(){
 
-        if (this.getCurrentRoute() === "") {
-            ContactManager.trigger("contacts:list");
+                Backbone.history.start();
+
+                if (ContactManager.getCurrentRoute() === "") {
+                    ContactManager.trigger("contacts:list");
+                }
+            });
         }
     });
 

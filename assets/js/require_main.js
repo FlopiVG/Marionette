@@ -2,11 +2,12 @@ requirejs.config({
     baseUrl: "assets/js",
     paths: {
         backbone: "vendor/backbone",
+        marionette: "vendor/backbone.marionette",
+        localstorage: "vendor/backbone.localstorage",
         jquery: "vendor/jquery",
         "jquery-ui": "vendor/jquery-ui",
         json2: "vendor/json2",
-        underscore: "vendor/underscore",
-        marionette: "vendor/backbone.marionette"
+        underscore: "vendor/underscore"
     },
     shim: {
         underscore: {
@@ -20,7 +21,8 @@ requirejs.config({
             deps: ["backbone"],
             exports: "Marionette"
         },
-        "jquery-ui": ["jquery"]
+        "jquery-ui": ["jquery"],
+        localstorage: ["backbone"]
     }
 });
 
