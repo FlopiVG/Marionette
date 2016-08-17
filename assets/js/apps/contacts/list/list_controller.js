@@ -1,4 +1,4 @@
-define(["app"], function(ContactManager){
+define(["app", "apps/contacts/list/list_view"], function(ContactManager, View){
 
     ContactManager.module("ContactsApp.List", function(List, ContactManager, Backbone, Marionette, $, _){
 
@@ -8,8 +8,24 @@ define(["app"], function(ContactManager){
 
                     var fetchingContacts = ContactManager.request("contact:entities");
 
+                    var contactsListLayout = new View.Layout();
+                    var contactsListPanel = new View.Panel();
+
                     $.when(fetchingContacts).done(function(contacts){
-                        console.log(contacts);
+                        var contactsListView = new View.Contacts({
+                            collection: contacts
+                        });
+
+                        contactsListLayout.on("show", function(){
+                            contactsListLayout.panelRegion.show(contactsListPanel);
+                            contactsListLayout.contactsRegion.show(contactsListView);
+                        });
+
+                        contactsListLayout.on("childview:contact:delete", function(childView, args){
+                            args.model.destroy();
+                        });
+
+                        ContactManager.mainRegion.show(contactsListLayout);
                     });
 
                 });
