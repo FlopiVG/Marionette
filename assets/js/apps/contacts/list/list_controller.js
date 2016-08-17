@@ -21,8 +21,8 @@ define(["app", "apps/contacts/list/list_view"], function(ContactManager, View){
                             contactsListLayout.contactsRegion.show(contactsListView);
                         });
 
-                        contactsListLayout.on("childview:contact:delete", function(childView, args){
-                            args.model.destroy();
+                        contactsListView.on("childview:contact:delete", function(childView, model){
+                            model.destroy();
                         });
 
                         ContactManager.mainRegion.show(contactsListLayout);
