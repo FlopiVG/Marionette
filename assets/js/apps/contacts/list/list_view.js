@@ -1,15 +1,21 @@
-define(["app"], function(ContactManager){
+define(["app",
+        "tpl!apps/contacts/list/templates/layout.tpl",
+        "tpl!apps/contacts/list/templates/panel.tpl",
+        "tpl!apps/contacts/list/templates/none.tpl",
+        "tpl!apps/contacts/list/templates/list.tpl",
+        "tpl!apps/contacts/list/templates/list_item.tpl"
+        ], function(ContactManager, layoutTpl, panelTpl, noneTpl, listTpl, listItemTpl){
 
     ContactManager.module("ContactsApp.List.View", function(View, ContactManager, Backbone, Marionette, $, _){
 
         var NoContactsView = Marionette.ItemView.extend({
-            template: '#contact-list-none',
+            template: noneTpl,
             tagName: "tr",
             className: "alert"
         });
 
         View.Layout = Marionette.LayoutView.extend({
-            template: "#contact-list-layout",
+            template: layoutTpl,
             regions: {
                 panelRegion: "#panel-region",
                 contactsRegion: "#contacts-region"
@@ -17,7 +23,7 @@ define(["app"], function(ContactManager){
         });
 
         View.Panel = Marionette.ItemView.extend({
-            template: "#contact-list-panel",
+            template: panelTpl,
             triggers : {
                 "click button.js-new": "contact:new"
             },
@@ -41,7 +47,7 @@ define(["app"], function(ContactManager){
 
         View.Contact = Marionette.ItemView.extend({
             tagName: "tr",
-            template: "#contact-list-item",
+            template: listItemTpl,
             events: {
                 "click": "highlightName",
                 "click td a.js-show": "showClicked",
@@ -92,7 +98,7 @@ define(["app"], function(ContactManager){
         View.Contacts = Marionette.CompositeView.extend({
             tagName: "table",
             className: "table table-hover",
-            template: "#contact-list",
+            template: listTpl,
             emptyView: NoContactsView,
             itemViewContainer: "tbody",
             childView: View.Contact,

@@ -7,6 +7,8 @@ requirejs.config({
         jquery: "vendor/jquery",
         "jquery-ui": "vendor/jquery-ui",
         json2: "vendor/json2",
+        text: "vendor/text",
+        tpl: "vendor/underscore-tpl",
         underscore: "vendor/underscore"
     },
     shim: {
@@ -22,7 +24,8 @@ requirejs.config({
             exports: "Marionette"
         },
         "jquery-ui": ["jquery"],
-        localstorage: ["backbone"]
+        localstorage: ["backbone"],
+        tpl: ["text"]
     }
 });
 
